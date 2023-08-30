@@ -121,25 +121,25 @@
                         <div class="row border bg-white pb-3">
                             <table class="table table-borderless m-3 flex-shrink-1">
                                 <thead>
-                                <tr class="border-top">
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Surname</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Role</th>
-                                </tr>
+                                    <tr class="border-top">
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Surname</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Role</th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="border-top bg-light" th:each="userNext: ${users}">
-                                    <td class="bg-light" th:text="${userNext.getId()}">UserName</td>
-                                    <td class="bg-light" th:text="${userNext.getName()}">UserName</td>
-                                    <td class="bg-light" th:text="${userNext.getSurname()}">UserName</td>
-                                    <td class="bg-light" th:text="${userNext.getEmail()}">Email</td>
-                                    <td class="d-flex">
-                                        <p class="bg-light" th:each="role : ${userNext.getRole()}">
-                                            <span th:text="${role.getName().replace('ROLE_', '')}" style="margin-right: 5px"></span>
-                                        </p>
-                                    </td>
+                                    <tr class="content-users__main border-top bg-light" th:each="userNext: ${users}">
+<!--                                        <td class="bg-light" th:text="${userNext.getId()}">UserName</td>-->
+<!--                                        <td class="bg-light" th:text="${userNext.getName()}">UserName</td>-->
+<!--                                        <td class="bg-light" th:text="${userNext.getSurname()}">UserName</td>-->
+<!--                                        <td class="bg-light" th:text="${userNext.getEmail()}">Email</td>-->
+<!--                                        <td class="d-flex">-->
+<!--                                            <p class="bg-light" th:each="role : ${userNext.getRole()}">-->
+<!--                                                <span th:text="${role.getName().replace('ROLE_', '')}" style="margin-right: 5px"></span>-->
+<!--                                            </p>-->
+<!--                                        </td>-->
                                     <td class="bg-light">
                                         <button type="submit" class="btn btn-info" data-bs-toggle="modal"
                                                 th:data-bs-target="'#updateModal' + ${userNext.id}">Edit
