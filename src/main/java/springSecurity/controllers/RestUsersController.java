@@ -26,30 +26,7 @@ public class RestUsersController {
 
     @GetMapping("/user")
     public ResponseEntity<User> showUser(Principal principal) {
-//        model.addAttribute("user",
-//                userService.findByUsername(principal.getName()));
+
         return new ResponseEntity<>(userService.findByUsername(principal.getName()), HttpStatus.OK);
     }
-
-    @GetMapping("/user1")
-    public User showUser1(Principal principal) {
-//        model.addAttribute("user",
-//                userService.findByUsername(principal.getName()));
-        return userService.findByUsername(principal.getName());
-    }
-
-//    @GetMapping()
-//    public User showUserInfo(Principal principal) {
-////        model.addAttribute("user",
-////                userService.findByUsername(principal.getName()));
-////        return new ResponseEntity<>(userService.findByUsername(principal.getName()), HttpStatus.OK);
-//        return userService.findByUsername(principal.getName());
-//    }
-
-    @GetMapping("/test")
-    public String sayHello() {
-        return "Hello world!";
-    }
-
-
 }

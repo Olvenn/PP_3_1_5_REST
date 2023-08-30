@@ -59,17 +59,13 @@
                 <div class="collapse navbar-collapse">
                 <ul class="me-auto d-flex align-items-center">
                     <li class="text-white me-auto item">
-                        <strong class="text-white" th:utext="${admin.getName()}">
-                            Username
+                        <strong class="navbar__user text-white">
                         </strong>
                     </li>
                     <li class="nav-item text-white item">
                         with roles:
                     </li>
-                    <li class="nav-item text-white item" th:each="role : ${admin.getRole()}">
-                        <div th:text="*{role.getName().replace('ROLE_', ' ')}">
-                            Role
-                        </div>
+                    <li class="navbar__role nav-item text-white item">
                     </li>
                 </ul>
                 <form th:action="@{/logout}" th:method="POST">
@@ -311,5 +307,6 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous">
 </script>
+<script type="text/javascript" src="admin.js"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package springSecurity.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -35,8 +36,9 @@ public class User {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @ManyToMany(cascade = {CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.MERGE},  fetch = FetchType.EAGER)
     @Fetch(FetchMode.JOIN)
+    @JsonIgnore
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
