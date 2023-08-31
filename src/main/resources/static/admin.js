@@ -7,7 +7,7 @@ const userRoleContainer = document.querySelector(".navbar__role");
 fetch(userUrl)
     .then(response => response.json())
     .then(user => {
-        console.log(user[1].body.name);
+        console.log(user[1].body);
         addDataInHeader(user[0].body);
         createUserItem(user[1].body)
     });
@@ -16,16 +16,21 @@ console.log("start")
 
 const createUserItem = (userNext) => {
     const user = `  
-         <td class="bg-light" th:text="${userNext.id}">UserName</td>
-         <td class="bg-light" th:text="${userNext.name}">UserName</td>
-         <td class="bg-light" th:text="${userNext.surname}">UserName</td>
-         <td class="bg-light" th:text="${userNext.email}">Email</td>
+         <td class="bg-light">UserName</td>
+         <td class="bg-light">UserName</td>
+         <td class="bg-light">UserName</td>
+         <td class="bg-light">Email</td>
          <td class="d-flex">
 
-          </td>
+         </td>
 `
-    userContainer.innerHTML = user;
+    userContainer.insertAdjacentHTML("afterbegin", user);
 };
+
+const createUsersList = (role) => (
+    `<span style="margin-right: 5px">${role.name.replace('ROLE_', '')}</span>`
+);
+
 
 // <p className="bg-light">
 //     ${userNext.role.map(role => createRoleItem(role)).join(' ')}
