@@ -10,8 +10,8 @@ fetch(userUrl)
     .then(user => {
         console.log(user[1].body);
         addDataInHeader(user[0].body);
-        // addUsersList(user[1].body)
-        createUserItem(user[1].body[1])
+        addUsersList(user[1].body)
+        // createUserItem(user[1].body[1])
 
         // addRollList(user[1].body)
     });
@@ -54,77 +54,127 @@ function addUsersList(users) {
 // </p>
 
 const createUserItem = (userNext) => {
-    const usersList =
-        ` <tr class="content-users__main border-top bg-light">
-      <td class="bg-light">${userNext.id}</td>
-      <td class="bg-light">${userNext.name}</td>
-      <td class="bg-light">${userNext.surname}</td>
-      <td class="bg-light">${userNext.email}</td>
-      <td class="bg-light">${userNext.role.map(role => createRoleItem(role)).join(' ')}</td>
-      <td class="bg-light">
-      
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal${userNext.id}">
-  Edit
-</button>
-
-<!-- Модальное окно -->
-<div class="modal fade" id="updateModal${userNext.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Заголовок модального окна</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-      </div>
-      <div class="modal-body">
-         <form class="form-group mx-auto col-lg-6 text-center" th:method="PATCH"
-    th:action="@{/admin/{id}(id=${userNext.id})}" th:object="${userNext}">
-    <div class="form-group">
-      <label for="ID-del">ID</label>
-      <input class="form-control" type="text" th:name="id" th:value="*{id}" id="ID-del" disabled>
-    </div>
-    <div class="form-group">
-      <label for="username-del">Login:</label>
-      <input class="form-control" type="text" th:name="username" th:value="*{username}" id="username-del">
-    </div>
-    <div class="form-group">
-      <label for="password-del">Password: </label>
-      <input class="form-control" type="password" th:name="password" th:value="*{email}" id="password-del" />
-    </div>
-    <div class="form-group">
-      <label for="name-del">Name: </label>
-      <input class="form-control" type="text" th:name="name" th:value="*{name}" id="name-del">
-    </div>
-    <div class="form-group">
-      <label for="surname-del">Surname: </label>
-      <input class="form-control" type="text" th:name="surname" th:value="*{surname}" id="surname-del" />
-    </div>
-    <div class="form-group">
-      <label for="email-del">E-mail: </label>
-      <input class="form-control" type="email" th:name="email" th:value="*{email}" id="email-del" />
-    </div>
-
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
-      </button>
-      <<button type="submit" class="btn btn-primary">Edit
-        </button>
-    </div>
-  </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-        <button type="button" class="btn btn-primary">Сохранить изменения</button>
-      </div>
-    </div>
-  </div>
-</div>
-      
-      
- 
-      </td>
-
+    const userList = ` 
+        <tr class="content-users__main border-top bg-light">
+            <td class="bg-light">${userNext.id}</td>
+            <td class="bg-light">${userNext.username}</td>
+            <td class="bg-light">${userNext.name}</td>
+            <td class="bg-light">${userNext.surname}</td>
+            <td class="bg-light">${userNext.email}</td>
+            <td class="bg-light">${userNext.role.map(role => createRoleItem(role)).join(' ')}</td>
+            <td class="bg-light">
+              
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal${userNext.id}">
+                  Edit
+                </button>
+        
+        <!-- Модальное окно -->
+                <div class="modal fade" id="updateModal${userNext.id}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                  aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Заголовок модального окна</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form class="form-group mx-auto col-lg-6 text-center" th:method="PATCH"
+                          th:action="@{/admin/{id}(id=${userNext.id})}" th:object="${userNext}">
+                          <div class="form-group">
+                            <label for="ID-del">ID</label>
+                            <input class="form-control" type="text" name="id" value="${userNext.id}" id="ID" disabled>
+                          </div>
+                          <div class="form-group">
+                            <label for="username-del">Login:</label>
+                            <input class="form-control" type="text" name="username" value="${userNext.username}" id="username">
+                          </div>
+                          <div class="form-group">
+                            <label for="password-del">Password: </label>
+                            <input class="form-control" type="password" name="password" th:value="${userNext.password}" id="password" />
+                          </div>
+                          <div class="form-group">
+                            <label for="name-del">Name: </label>
+                            <input class="form-control" type="text" name="name" value="${userNext.name}" id="name">
+                          </div>
+                          <div class="form-group">
+                            <label for="surname-del">Surname: </label>
+                            <input class="form-control" type="text" name="surname" value="${userNext.surname}" id="surname" />
+                          </div>
+                          <div class="form-group">
+                            <label for="email-del">E-mail: </label>
+                            <input class="form-control" type="email" name="email" value="${userNext.email}" id="email" />
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                            </button>
+                            <<button type="submit" class="btn btn-primary">Edit
+                              </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </td>
+          
+           <td class="bg-light">
+           <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal${userNext.id}">
+              Edit
+           </button>
+    
+    <!-- Модальное окно -->
+            <div class="modal fade" id="deleteModal${userNext.id}" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Заголовок модального окна</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form class="form-group mx-auto col-lg-6 text-center" th:method="PATCH"
+                      th:action="@{/admin/{id}(id=${userNext.id})}" th:object="${userNext}">
+                      <div class="form-group">
+                        <label for="ID-del">ID</label>
+                        <input class="form-control" type="text" name="id" th:value="${userNext.id}" id="ID-del" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="username-del">Login:</label>
+                        <input class="form-control" type="text" name="username" value="${userNext.username}" id="username-del" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="password-del">Password: </label>
+                        <input class="form-control" type="password" name="password" th:value="${userNext.password}" id="password-del" disabled/>
+                      </div>
+                      <div class="form-group">
+                        <label for="name-del">Name: </label>
+                        <input class="form-control" type="text" name="name" value="${userNext.name}" id="name-del" disabled>
+                      </div>
+                      <div class="form-group">
+                        <label for="surname-del">Surname: </label>
+                        <input class="form-control" type="text" name="surname" value="${userNext.surname}" id="surname-del" disabled/>
+                      </div>
+                      <div class="form-group">
+                        <label for="email-del">E-mail: </label>
+                        <input class="form-control" type="email" name="email" value="*{${userNext.email}" id="email-del" disabled/>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                        </button>
+                        <<button type="submit" class="btn btn-primary">
+                            Delete
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+      </tr>
   `;
-    userContainer.insertAdjacentHTML("beforeend", usersList);
+    return userList;
+    // userContainer.insertAdjacentHTML("beforeend", userList);
 };
 
 
