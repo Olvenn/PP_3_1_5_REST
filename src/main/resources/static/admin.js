@@ -1,11 +1,43 @@
-const userUrl = 'http://localhost:8090/api/users';
+const usersUrl = 'http://localhost:8090/api/users';
 
 const userContainer = document.querySelector(".list-users");
 const userNameContainer = document.querySelector(".navbar__user");
 const userRoleContainer = document.querySelector(".navbar__role");
 const userEditBtn = document.querySelector(".user-edit");
 
-fetch(userUrl)
+// async function getUserById(url) {
+//     const response = await fetch(url);
+//     return await response.json();
+// }
+
+function getUserById(url) {
+    return fetch(url)
+        .then(response => response.json())
+        .then(json => (json))
+}
+
+let a = [];
+getUserById('http://localhost:8090/api/users/0')
+    .then(output => {
+        a = Object.values(output)
+        console.log(a);
+        return a
+    })
+
+
+// getUserById('http://localhost:8090/api/users/0')
+//
+//     .then(output => {
+//         let a = []
+//         a = Object.values(output)
+//         console.log(a);
+//         return a
+//     })
+//     .catch(err => console.log(err))
+
+
+
+fetch(usersUrl)
     .then(response => response.json())
     .then(user => {
         console.log(user[1].body);
@@ -15,6 +47,16 @@ fetch(userUrl)
 
         // addRollList(user[1].body)
     });
+
+
+// function getUserById (id) {
+//     fetch(userUrl)
+//         .then(response => response.json())
+//         .then(user =>
+//         });
+
+
+
 
 console.log("start")
 
@@ -36,6 +78,37 @@ function addUsersList(users) {
         ${users.map(user => createUserItem(user))}
     </tbody>`;
     userContainer.insertAdjacentHTML("beforeend", usersList);
+}
+
+function deleteUser() {
+    const buttons = document.querySelectorAll('.btn-delete');
+    // const buttons = document.querySelectorAll('#delete-user');
+
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+
+            // const userDTO = {
+            //     id: form.querySelector('#delete-id').value,
+            //     name: form.querySelector('#delete-name').value,
+            //     surname: form.querySelector('#delete-surname').value,
+            //     age: form.querySelector('#delete-age').value,
+            //     email: form.querySelector('#delete-email').value,
+            //     roles: Array.from(form.roles.selectedOptions, option => ({id: option.value})),
+            // };
+            //
+            // fetch(deleteUserUrl, {
+            //     method: 'DELETE',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify(userDTO)
+            // }).then(response => response.json()).then(data => {
+            //     console.log(data)
+            //     completeTable();
+            //     deleteModal();
+            // });
+        });
+    });
 }
 
 // function addUserList(user) {
@@ -107,7 +180,7 @@ const createUserItem = (userNext) => {
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
                             </button>
-                            <<button type="submit" class="btn btn-primary">Edit
+                            <button type="submit" class="btn btn-primary btn-edit">Edit
                               </button>
                           </div>
                         </form>
@@ -136,7 +209,7 @@ const createUserItem = (userNext) => {
                       th:action="@{/admin/{id}(id=${userNext.id})}" th:object="${userNext}">
                       <div class="form-group">
                         <label for="ID-del">ID</label>
-                        <input class="form-control" type="text" name="id" th:value="${userNext.id}" id="ID-del" disabled>
+                        <input class="form-control" type="text" name="id" value="${userNext.id}" id="ID-del" disabled>
                       </div>
                       <div class="form-group">
                         <label for="username-del">Login:</label>
@@ -144,7 +217,7 @@ const createUserItem = (userNext) => {
                       </div>
                       <div class="form-group">
                         <label for="password-del">Password: </label>
-                        <input class="form-control" type="password" name="password" th:value="${userNext.password}" id="password-del" disabled/>
+                        <input class="form-control" type="password" name="password" value="${userNext.password}" id="password-del" disabled/>
                       </div>
                       <div class="form-group">
                         <label for="name-del">Name: </label>
@@ -156,12 +229,12 @@ const createUserItem = (userNext) => {
                       </div>
                       <div class="form-group">
                         <label for="email-del">E-mail: </label>
-                        <input class="form-control" type="email" name="email" value="*{${userNext.email}" id="email-del" disabled/>
+                        <input class="form-control" type="email" name="email" value="${userNext.email}" id="email-del" disabled/>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
                         </button>
-                        <<button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary btn-delete" data-bs-target="${userNext.id}">
                             Delete
                         </button>
                       </div>

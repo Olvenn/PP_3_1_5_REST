@@ -3,6 +3,7 @@ package springSecurity.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springSecurity.models.Role;
@@ -40,4 +41,11 @@ public class RestAdminController {
 
         return new ResponseEntity<>(entities, HttpStatus.OK);
     }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getOneUser(@PathVariable("id") Long id) {
+        User user = userService.findOneUser(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
 }

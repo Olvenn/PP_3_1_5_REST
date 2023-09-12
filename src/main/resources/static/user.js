@@ -35,6 +35,8 @@ const createUserItem = (user) => (
          </tr>`
 );
 
+
+
 const createRoleItem = (role) => (
     `<span style="margin-right: 5px">${role.name.replace('ROLE_', '')}</span>`
 );
