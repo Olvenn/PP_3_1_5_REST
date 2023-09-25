@@ -2,10 +2,7 @@ package springSecurity.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import springSecurity.models.Role;
 import springSecurity.models.User;
 import springSecurity.service.RoleServiceImpl;
@@ -48,4 +45,9 @@ public class RestAdminController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+        return ResponseEntity.ok().build();
+    }
 }
