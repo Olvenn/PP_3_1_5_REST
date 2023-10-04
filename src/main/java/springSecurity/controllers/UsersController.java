@@ -22,9 +22,15 @@ public class UsersController {
     }
 
     @GetMapping()
-    public String showUser(Model model, Principal principal) {
-        model.addAttribute("user",
-                userService.findByUsername(principal.getName()));
+    public String showUser() {
         return "users/user";
     }
+
+
+//    @GetMapping()
+//    public String showUser(Model model, Principal principal) {
+//        model.addAttribute("user",
+//                userService.findByUsername(principal.getName()));
+//        return "users/user";
+//    }
 }

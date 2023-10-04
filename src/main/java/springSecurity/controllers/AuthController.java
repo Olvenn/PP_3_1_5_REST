@@ -42,24 +42,28 @@ public class AuthController {
     }
 
     @GetMapping("/registration")
-    public String showRegistrationPage(Model model) {
-        model.addAttribute("roleDefault", "ROLE_ADMIN");
-        model.addAttribute("roles", roleService.getRoles());
-        model.addAttribute("admin", userService.findByUsername("Admin"));
-        model.addAttribute("user", new User());
+    public String showRegistrationPage() {
         return "auth/registration";
     }
-
-    @PostMapping("/registration")
-    public String performRegistration(@ModelAttribute("user") @Valid User user,
-                                      BindingResult bindingResult) {
-        personValidator.validate(user, bindingResult);
-
-        if (bindingResult.hasErrors())
-            return "/auth/registration";
-
-        registrationService.register(user);
-
-        return "redirect:/admin";
-    }
+//    @GetMapping("/registration")
+//    public String showRegistrationPage(Model model) {
+//        model.addAttribute("roleDefault", "ROLE_ADMIN");
+//        model.addAttribute("roles", roleService.getRoles());
+//        model.addAttribute("admin", userService.findByUsername("Admin"));
+//        model.addAttribute("user", new User());
+//        return "auth/registration";
+//    }
+//
+//    @PostMapping("/registration")
+//    public String performRegistration(@ModelAttribute("user") @Valid User user,
+//                                      BindingResult bindingResult) {
+//        personValidator.validate(user, bindingResult);
+//
+//        if (bindingResult.hasErrors())
+//            return "/auth/registration";
+//
+//        registrationService.register(user);
+//
+//        return "redirect:/admin";
+//    }
 }
