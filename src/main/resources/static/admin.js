@@ -19,15 +19,14 @@ const getUsersTable = (usersUrl) => {
             addDataInHeader(user[0].body);
             addUsersList(user[1].body)
             // createUserItem(user[1].body[1])
-            // deleteUsers();
-            deleteUser();
+            deleteUsers();
+            // deleteUser();
             // addRollList(user[1].body)
+            getEditButtons();
         });
 }
 
 getUsersTable(usersUrl);
-
-console.log("start")
 
 function addUsersList(users) {
 
@@ -38,9 +37,52 @@ function addUsersList(users) {
     userContainer.insertAdjacentHTML("beforeend", usersList);
 }
 
-function deleteUser() {
+function getEditButtons() {
+    const buttons = document.querySelectorAll('.form-edit');
+    console.log("getEditButtons", buttons);
+
+    buttons.forEach(button => {
+        button.addEventListener('submit', (evt) => {
+            evt.preventDefault();
+            console.log("edit", button);
+
+            editUser(evt.target);
+        });
+    });
+}
+
+function editUser(dataAll) {
+    const id = dataAll.id.value;
+
+    let editUserRoles = [];
+    for (let i = 0; i < dataAll.roles.options.length; i++) {
+        if (dataAll.roles.options[i].selected) editUserRoles.push({
+            id : dataAll.roles.options[i].value,
+            role : "ROLE_" + dataAll.roles.options[i].text
+        })
+    }
+
+    fetch("http://localhost:8080/api/users/" + id, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            name: dataAll.username.value,
+            surname: dataAll.surname.value,
+            username: dataAll.username.value,
+            email: dataAll.email.value,
+            password: dataAll.password.value,
+            roles: editUserRoles,
+        })
+    }).then(() => {
+        addUsersList(dataAll)
+    })
+}
+
+function deleteUser(id) {
     console.log("userDeleteBtn", userDeleteBtn);
-    fetch("http://localhost:8090/api/users/1", {
+    fetch("http://localhost:8090/api/users/" + id, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -52,20 +94,18 @@ function deleteUser() {
 
 function deleteUsers() {
     const buttons = document.querySelectorAll('.form-delete');
-    // const buttons = document.querySelectorAll('#delete-user');
     console.log(buttons);
 
     buttons.forEach(button => {
         button.addEventListener('submit', (evt) => {
             evt.preventDefault();
-            console.log("delete");
+            // console.log("delete", button);
+            // console.log("evt", evt.target.id.value);
 
             deleteUser();
-           });
+        });
     });
 }
-
-
 
 const createUserItem = (userNext) => {
     const userList = ` 
@@ -92,8 +132,7 @@ const createUserItem = (userNext) => {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
                       </div>
                       <div class="modal-body">
-                        <form class="form-group mx-auto col-lg-6 text-center" th:method="PATCH"
-                          th:action="@{/admin/{id}(id=${userNext.id})}" th:object="${userNext}">
+                        <form class="form-edit form-group mx-auto col-lg-6 text-center">
                           <div class="form-group">
                             <label for="ID-del">ID</label>
                             <input class="form-control" type="text" name="id" value="${userNext.id}" id="ID" disabled>
@@ -118,12 +157,26 @@ const createUserItem = (userNext) => {
                             <label for="email-del">E-mail: </label>
                             <input class="form-control" type="email" name="email" value="${userNext.email}" id="email" />
                           </div>
+                          <div class="form-group mb-3">
+                                <label for="role">Role</label>
+                                <div>
+                                    <select multiple class="custom-select" name="roles" size="2"
+                                            id="role" required>
+                                        <option>
+                                            ADMIN
+                                        </option>
+                                        <option>
+                                            USER
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
                           <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                 Close
                             </button>
                             <button type="submit" class="btn btn-primary btn-edit">
-                                Delete
+                                Edit
                             </button>
                           </div>
                         </form>
@@ -135,7 +188,7 @@ const createUserItem = (userNext) => {
           
            <td class="bg-light">
            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal${userNext.id}">
-              Edit
+              Delete
            </button>
     
     <!-- Модальное окно -->
@@ -173,6 +226,20 @@ const createUserItem = (userNext) => {
                         <label for="email-del">E-mail: </label>
                         <input class="form-control" type="email" name="email" value="${userNext.email}" id="email-del" disabled/>
                       </div>
+                       <div class="form-group mb-3">
+                                <label for="role">Role</label>
+                                <div>
+                                    <select multiple class="custom-select" name="roles" size="2"
+                                            id="role" required>
+                                        <option>
+                                            ADMIN
+                                        </option>
+                                        <option>
+                                            USER
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
                         </button>
@@ -189,13 +256,13 @@ const createUserItem = (userNext) => {
       </tr>
   `;
     return userList;
- };
+};
 
 function addDataInHeader(user) {
 
     const role = `
     <li class="nav-item text-white item">
-        ${user.role.map(role => createRoleItem(role)).join(' ')}
+        ${user.role.map(role => createRoleItem(role)).join(' ')}                                                                                                                                                                                                                                                                                                                              
     </li>`;
     userNameContainer.innerText = user.name;
     userRoleContainer.innerHTML = role;

@@ -45,6 +45,12 @@ public class RestAdminController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @PutMapping("/users")
+    public ResponseEntity<User> editUser(@RequestBody User user) {
+        userService.updateUser(user.getId(), user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @DeleteMapping("/users/{id}")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
