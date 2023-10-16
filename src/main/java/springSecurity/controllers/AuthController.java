@@ -36,10 +36,10 @@ public class AuthController {
         this.userService = userService;
     }
 
-//    @GetMapping("/login")
-//    public String showLoginPage() {
-//        return "auth/login";
-//    }
+    @GetMapping("/login")
+    public String showLoginPage() {
+        return "auth/login";
+    }
 
     @GetMapping("/registration")
     public String showRegistrationPage() {
